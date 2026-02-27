@@ -18,7 +18,7 @@ sturct Parameters {
 ```swift
 typealias Settings = SettingsStorage<Parameters>
 
-let settings: Settings = ...       // see initialisation below
+let settings: Settings = ...       // (see instance constructing below)
 
 let detailed = settings.isDetailed // read from persistent storage
 settings.armedAt = .now            // write into persistent storage
@@ -41,18 +41,20 @@ let folder: URL = FileManager.default.documentFolder
 let migration: [GrdbSchemaVersion] = [V01] 
 let instance = Settings(name: storageName, at: folder, migration)
 
-// important!
+// !important!
 // you can have a number of such storages, for example
 // BrandingSettings, NetworkSettings and so on, but every
 // instance should be a singleton. it is recommended to
 // store this singletones inside of some dependency injection
-// system.
+// system. for example:
+import CoreToolkit
+
 final class ViewModel : ObservableObject {
    
    private let settings: Settings?
    
-   init() {
-       self.settings = Di.inject(Settings?.self)
+   init(_ di: Di) {
+       self.settings = di.inject(Settings?.self) // CoreToolkit dependency injection tool
    }
    
 }
