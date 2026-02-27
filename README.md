@@ -62,6 +62,12 @@ final class ViewModel : ObservableObject {
 
 ### a few steps of adjustments before usage:
 
+possible you will also need to add packages:
+
+- `StorageSolutions` (https://github.com/lev-baryshev/storage-solutions.git)
+- `GRDB` (https://github.com/groue/GRDB.swift.git)
+- `CoreToolkit` (https://github.com/lev-baryshev/core-toolkit.git)
+
 ```swift
 // 1. specify database column names for every parameter
 final class Columns {
