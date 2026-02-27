@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "core-toolkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lev-baryshev/core-toolkit.git",
+      "state" : {
+        "revision" : "195471e850c5a0748d66b4bda62644e45d18aaa7",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "grdb.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/GRDB.swift.git",
+      "state" : {
+        "revision" : "dd6b98ce04eda39aa22f066cd421c24d7236ea8a",
+        "version" : "6.29.1"
+      }
+    },
+    {
+      "identity" : "storage-solutions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lev-baryshev/storage-solutions.git",
+      "state" : {
+        "revision" : "b2a5d5a7c86a418aa53bbdbf1ce574dc310b30cc",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "swinject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Swinject/Swinject.git",
+      "state" : {
+        "revision" : "f10b6e9ebff440f985c43008f7c2d097639fcb81",
+        "version" : "2.8.1"
+      }
+    }
+  ],
+  "version" : 2
+}
