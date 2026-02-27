@@ -12,31 +12,62 @@ sturct Parameters {
     var armedAt: Date?
 
 }
-
-// storage instance
-typealias Settings = SettingsStorage<Parameters>
-
-guard let settings: Settings = .init(name: storageName, at: folder, migration) // (see description below)
-else {
-    return
-}
 ```
 ### easy usage with RAM-speed access:
 
 ```swift
+typealias Settings = SettingsStorage<Parameters>
+
+let settings: Settings = ...       // see initialisation below
+
 let detailed = settings.isDetailed // read from persistent storage
 settings.armedAt = .now            // write into persistent storage
-```
-and that's it! extremely simple and excellent!
 
-### a few steps of storage adjustment before usage:
+// and that's it! extremely simple and excellent!
+```
+### constructing storage instance:
+
+```swift
+// name of your settings storage
+let storageName: String = "Settings"
+
+// url of folder, where your storage file is located
+// (or where you want it to be created, in case of first run)
+let folder: URL = FileManager.default.documentFolder
+
+// (see step 3 of adjustments below). you can add 
+// new versions of database schema if you need to modify
+// storage structure or make some migrations of data
+let migration: [GrdbSchemaVersion] = [V01] 
+let instance = Settings(name: storageName, at: folder, migration)
+
+// important!
+// you can have a number of such storages, for example
+// BrandingSettings, NetworkSettings and so on, but every
+// instance should be a singleton. it is recommended to
+// store this singletones inside of some dependency injection
+// system.
+final class ViewModel : ObservableObject {
+   
+   private let settings: Settings?
+   
+   init() {
+       self.settings = Di.inject(Settings?.self)
+   }
+   
+}
+```
+
+### a few steps of adjustments before usage:
 
 ```swift
 // 1. specify database column names for every parameter
 final class Columns {
+
     static let isDetailed: = "isDetailed"
     static let apiUrl:     = "apiUrl"
     static let armedAt     = "armedAt"
+    
 }
 
 // 2. specify parameters mapping into columns of table row
@@ -78,25 +109,9 @@ final class V01 : GrdbSchemaVersion {
                 
             table.column(Columns.isDetailed, .boolean).defaults(to: nilBoolean)
             table.column(Columns.apiUrl,     .text).defaults(to: nilString)
-            table.column(Columns.armedAt,   .timeInterval).defaults(to: nilDouble)
+            table.column(Columns.armedAt,    .timeInterval).defaults(to: nilDouble)
         }
     }
 
 }
-```
-### storage initialization:
-
-```swift
-// name of your settings storage
-let storageName: String = "Settings"
-
-// url of folder, where your storage file is located
-// (or where you want it to be created, in case of first run)
-let folder: URL = FileManager.default.documentFolder
-
-// see step 3 of storage adjustment above. you can add 
-// new versions of database schema if you need to modify
-// storage structure or make some migrations of data
-let migration: [GrdbSchemaVersion] = [V01] 
-let instance = Settings(name: storageName, at: folder, migration)
 ```
