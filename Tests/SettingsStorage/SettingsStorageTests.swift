@@ -131,16 +131,18 @@ extension SettingsExample : SettingsRecord {
     func save(into row: inout PersistenceContainer) throws {
         row[Columns.isOn] = isOn
         row[Columns.api] = api?.absoluteString
-        row[Columns.armedAt] = armedAt
+        row[Columns.armedAt] = armedAt.since1970
     }
     
     static func load(from row: Row) throws -> SettingsExample {
         let isOn: Bool?             = row[Columns.isOn]
         let api: String?            = row[Columns.api]
         let armedAt: TimeInterval?  = row[Columns.armedAt]
-        return SettingsExample(isOn:    isOn                                    ?? Self.empty.isOn,
-                               api:     unwrap(api)     { URL($0) }             ?? Self.empty.api,
-                               armedAt: unwrap(armedAt) { Date(since1970: $0) } ?? Self.empty.armedAt)
+        return SettingsExample(
+            isOn:    isOn                                    ?? Self.empty.isOn,
+            api:     unwrap(api)     { URL($0) }             ?? Self.empty.api,
+            armedAt: unwrap(armedAt) { Date(since1970: $0) } ?? Self.empty.armedAt
+        )
     }
     
 }
